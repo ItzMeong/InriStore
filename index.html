@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroStore - Toko Barang Elektronik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'magenta': {
+                            500: '#e91e63',
+                            600: '#d81b60',
+                            700: '#c2185b',
+                            800: '#ad1457',
+                            900: '#880e4f'
+                        },
+                        'pink': {
+                            400: '#f48fb1',
+                            500: '#ec407a',
+                            600: '#e91e63'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(233, 30, 99, 0.3);
+        }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
+        }
+        .text-gradient {
+            background: linear-gradient(45deg, #e91e63, #f48fb1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-gray-900/90 backdrop-blur-md border-b border-magenta-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gradient">ElectroStore</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="showPage('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium hover:bg-magenta-600 transition-colors">Beranda</button>
+                        <button onclick="showPage('products')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium hover:bg-magenta-600 transition-colors">Produk</button>
+                        <button onclick="showPage('order')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium hover:bg-magenta-600 transition-colors">Pemesanan</button>
+                        <button onclick="showPage('contact')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium hover:bg-magenta-600 transition-colors">Kontak</button>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-white hover:text-magenta-400">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/95">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="showPage('home')" class="block px-3 py-2 text-base font-medium hover:bg-magenta-600 transition-colors w-full text-left">Beranda</button>
+                <button onclick="showPage('products')" class="block px-3 py-2 text-base font-medium hover:bg-magenta-600 transition-colors w-full text-left">Produk</button>
+                <button onclick="showPage('order')" class="block px-3 py-2 text-base font-medium hover:bg-magenta-600 transition-colors w-full text-left">Pemesanan</button>
+                <button onclick="showPage('contact')" class="block px-3 py-2 text-base font-medium hover:bg-magenta-600 transition-colors w-full text-left">Kontak</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="pt-20 pb-16 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                        <span class="text-gradient">Toko Elektronik</span><br>
+                        <span class="text-white">Terpercaya</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                        Belanja barang elektronik berkualitas dengan harga terbaik. Smartphone, laptop, headphone, dan gadget terbaru tersedia di sini.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="showPage('products')" class="bg-magenta-600 hover:bg-magenta-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all glow-effect">
+                            Lihat Produk
+                        </button>
+                        <button onclick="showPage('order')" class="border-2 border-magenta-500 text-magenta-400 hover:bg-magenta-500 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 px-4">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gradient">Mengapa Belanja di Sini?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800/50 p-8 rounded-xl card-hover border border-magenta-500/20">
+                        <div class="text-magenta-400 text-4xl mb-4">🚚</div>
+                        <h3 class="text-xl font-semibold mb-4">Pengiriman Cepat</h3>
+                        <p class="text-gray-300">Pengiriman same day untuk area Jakarta dan gratis ongkir untuk pembelian di atas 1 juta.</p>
+                    </div>
+                    <div class="bg-gray-800/50 p-8 rounded-xl card-hover border border-magenta-500/20">
+                        <div class="text-magenta-400 text-4xl mb-4">✅</div>
+                        <h3 class="text-xl font-semibold mb-4">Produk Original</h3>
+                        <p class="text-gray-300">Semua produk 100% original dengan garansi resmi dari distributor dan brand.</p>
+                    </div>
+                    <div class="bg-gray-800/50 p-8 rounded-xl card-hover border border-magenta-500/20">
+                        <div class="text-magenta-400 text-4xl mb-4">💰</div>
+                        <h3 class="text-xl font-semibold mb-4">Harga Terbaik</h3>
+                        <p class="text-gray-300">Harga kompetitif dengan berbagai promo menarik dan cicilan 0% tersedia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products-page" class="page-content hidden">
+        <section class="pt-24 pb-16 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h1 class="text-5xl font-bold mb-6 text-gradient">Produk Kami</h1>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Koleksi lengkap barang elektronik terbaru dengan kualitas terjamin dan harga terbaik
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Product Cards -->
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-pink-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Smartphone</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="ipong.jpg" alt="iPhone 15 Pro Max" class="bg-gray-800/60 p-6 rounded-xl card-hover border border-pink-500/30 w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">iPhone 15 Pro Max</h4>
+                                <p class="text-gray-300 text-sm mb-2">256GB, Titanium Natural</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 21.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="samsung.jpg" alt="Samsung Galaxy S24 Ultra" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Samsung Galaxy S24 Ultra</h4>
+                                <p class="text-gray-300 text-sm mb-2">512GB, Titanium Gray</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 19.999.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-magenta-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Laptop</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="macbook.jpg" alt="MacBook Pro M3" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">MacBook Pro M3</h4>
+                                <p class="text-gray-300 text-sm mb-2">14", 16GB RAM, 512GB SSD</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 32.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="thinkpad.jpg" alt="Lenovo ThinkPad X1" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Lenovo ThinkPad X1</h4>
+                                <p class="text-gray-300 text-sm mb-2">Intel i7, 32GB RAM, 1TB SSD</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 28.999.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-magenta-600 hover:bg-magenta-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-pink-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Headphone & Audio</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="airpods.jpg" alt="AirPods Pro 2" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">AirPods Pro 2</h4>
+                                <p class="text-gray-300 text-sm mb-2">USB-C, Active Noise Cancelling</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 3.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="Sony headset.jpg" alt="Sony WH-1000XM5" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Sony WH-1000XM5</h4>
+                                <p class="text-gray-300 text-sm mb-2">Wireless, Noise Cancelling</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 5.499.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-magenta-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Gaming Console</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="ps5.jpg" alt="PlayStation 5" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">PlayStation 5</h4>
+                                <p class="text-gray-300 text-sm mb-2">825GB SSD, 2 Controllers</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 8.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="nintendo.jpg" alt="Nintendo Switch OLED" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Nintendo Switch OLED</h4>
+                                <p class="text-gray-300 text-sm mb-2">64GB, White Edition</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 5.299.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-magenta-600 hover:bg-magenta-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-pink-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Smart TV</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="Samsung Tv.jpg" alt="Samsung QLED 65"" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Samsung QLED 65"</h4>
+                                <p class="text-gray-300 text-sm mb-2">4K, Smart TV, HDR10+</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 18.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-pink-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="LG.jpg" alt="LG OLED 55"" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">LG OLED 55"</h4>
+                                <p class="text-gray-300 text-sm mb-2">4K, webOS, Dolby Vision</p>
+                                <p class="text-pink-400 font-bold text-lg">Rp 22.999.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-800/60 p-6 rounded-xl card-hover border border-magenta-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-white text-center">Smartwatch & Gadget</h3>
+                        <div class="space-y-4 mb-6">
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="apple watch.jpg" alt="Apple Watch Ultra 2" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">Apple Watch Ultra 2</h4>
+                                <p class="text-gray-300 text-sm mb-2">49mm, Titanium, GPS + Cellular</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 12.999.000</p>
+                            </div>
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="w-full h-32 bg-gray-600/50 rounded-lg border-2 border-dashed border-magenta-400/30 flex items-center justify-center mb-3">
+                                    <div class="text-center">
+                                        <img src="ipad.jpg" alt="iPad Pro 12.9 M2" class="w-full h-32 object-cover rounded-full border-8 border-magenta shadow-lg">
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-white mb-2">iPad Pro 12.9" M2</h4>
+                                <p class="text-gray-300 text-sm mb-2">256GB, WiFi + Cellular</p>
+                                <p class="text-magenta-400 font-bold text-lg">Rp 18.999.000</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('order')" class="w-full bg-magenta-600 hover:bg-magenta-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Order Page -->
+    <div id="order-page" class="page-content hidden">
+        <section class="pt-24 pb-16 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-5xl font-bold mb-6 text-gradient">Pemesanan Produk</h1>
+                    <p class="text-xl text-gray-300">
+                        Isi form di bawah ini untuk memesan produk elektronik pilihan Anda
+                    </p>
+                </div>
+
+                <div class="bg-gray-800/60 p-8 rounded-xl border border-magenta-500/30">
+                    <form id="orderForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nama Lengkap *</label>
+                                <input type="text" id="fullName" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Nomor Telepon *</label>
+                                <input type="tel" id="phone" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Kategori Produk *</label>
+                            <select id="productCategory" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                                <option value="">Pilih Kategori Produk</option>
+                                <option value="smartphone">Smartphone</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="headphone">Headphone & Audio</option>
+                                <option value="gaming-console">Gaming Console</option>
+                                <option value="smart-tv">Smart TV</option>
+                                <option value="smartwatch">Smartwatch & Gadget</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Produk Spesifik</label>
+                            <input type="text" id="specificProduct" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors" placeholder="Contoh: iPhone 15 Pro Max 256GB">
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Jumlah *</label>
+                                <input type="number" id="quantity" required min="1" value="1" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Budget (Opsional)</label>
+                                <input type="text" id="budget" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors" placeholder="Contoh: 20.000.000">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Alamat Lengkap *</label>
+                            <textarea id="address" required rows="3" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors" placeholder="Masukkan alamat lengkap untuk pengiriman"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Catatan Tambahan</label>
+                            <textarea id="additionalNotes" rows="4" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors" placeholder="Spesifikasi khusus, warna yang diinginkan, atau catatan lainnya"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Metode Pengiriman *</label>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="shipping" value="regular" checked class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Pengiriman Regular</span>
+                                        <p class="text-gray-400 text-sm">2-3 hari kerja (Gratis)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="shipping" value="express" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Pengiriman Express</span>
+                                        <p class="text-gray-400 text-sm">1 hari kerja (+Rp 50.000)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="shipping" value="same-day" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Same Day</span>
+                                        <p class="text-gray-400 text-sm">Hari yang sama (+Rp 100.000)</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="shipping" value="pickup" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Ambil di Toko</span>
+                                        <p class="text-gray-400 text-sm">Gratis, siap dalam 2 jam</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Metode Pembayaran</label>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="payment" value="transfer" checked class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Transfer Bank</span>
+                                        <p class="text-gray-400 text-sm">BCA, Mandiri, BNI, BRI</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="payment" value="ewallet" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">E-Wallet</span>
+                                        <p class="text-gray-400 text-sm">GoPay, OVO, DANA, ShopeePay</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="payment" value="installment" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Cicilan 0%</span>
+                                        <p class="text-gray-400 text-sm">6, 12, 24 bulan</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors">
+                                    <input type="radio" name="payment" value="cod" class="text-magenta-500 focus:ring-magenta-500">
+                                    <div class="ml-3">
+                                        <span class="text-white font-medium">Bayar di Tempat</span>
+                                        <p class="text-gray-400 text-sm">Cash on Delivery</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input type="checkbox" id="agreement" required class="text-magenta-500 focus:ring-magenta-500">
+                            <label for="agreement" class="ml-2 text-sm text-gray-300">
+                                Saya setuju dengan <span class="text-magenta-400 cursor-pointer hover:underline">syarat dan ketentuan</span> layanan
+                            </label>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="submit" class="flex-1 bg-magenta-600 hover:bg-magenta-700 text-white py-4 rounded-lg font-semibold transition-all glow-effect">
+                                Kirim Pesanan
+                            </button>
+                            <button type="button" onclick="resetForm()" class="px-8 py-4 border-2 border-gray-600 text-gray-300 hover:border-magenta-500 hover:text-magenta-400 rounded-lg font-semibold transition-colors">
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div id="orderSummary" class="hidden mt-8 bg-green-800/30 border border-green-500/50 p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-green-400 mb-4">✅ Pesanan Berhasil Dikirim!</h3>
+                    <p class="text-gray-300 mb-4">Terima kasih atas pesanan Anda. Tim kami akan segera menghubungi Anda untuk konfirmasi ketersediaan produk dan proses pembayaran.</p>
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-magenta-400 mb-2">Ringkasan Pesanan:</h4>
+                        <div id="summaryContent" class="text-sm text-gray-300 space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact-page" class="page-content hidden">
+        <section class="pt-24 pb-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h1 class="text-5xl font-bold mb-6 text-gradient">Hubungi Kami</h1>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Siap membantu Anda 24/7. Hubungi kami melalui berbagai channel yang tersedia
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Contact Info -->
+                    <div class="space-y-8">
+                        <div class="bg-gray-800/60 p-8 rounded-xl border border-magenta-500/30">
+                            <h3 class="text-2xl font-bold mb-6 text-magenta-400">Informasi Kontak</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-pink-400 text-2xl">📞</div>
+                                    <div>
+                                        <h4 class="font-semibold text-white mb-1">Telepon & WhatsApp</h4>
+                                        <p class="text-gray-300">+62 812-3456-7890</p>
+                                        <p class="text-sm text-gray-400">24/7 untuk layanan darurat</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-pink-400 text-2xl">✉️</div>
+                                    <div>
+                                        <h4 class="font-semibold text-white mb-1">Email</h4>
+                                        <p class="text-gray-300">info@electrostore.com</p>
+                                        <p class="text-sm text-gray-400">Respon dalam 2 jam kerja</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-pink-400 text-2xl">📍</div>
+                                    <div>
+                                        <h4 class="font-semibold text-white mb-1">Alamat Toko</h4>
+                                        <p class="text-gray-300">Jl. Elektronik No. 123<br>Jakarta Selatan 12345</p>
+                                        <p class="text-sm text-gray-400">Senin - Sabtu: 08:00 - 20:00</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-pink-400 text-2xl">⏰</div>
+                                    <div>
+                                        <h4 class="font-semibold text-white mb-1">Jam Operasional</h4>
+                                        <p class="text-gray-300">Senin - Jumat: 08:00 - 20:00</p>
+                                        <p class="text-gray-300">Sabtu: 08:00 - 17:00</p>
+                                        <p class="text-gray-300">Minggu: 10:00 - 15:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media -->
+                        <div class="bg-gray-800/60 p-8 rounded-xl border border-pink-500/30">
+                            <h3 class="text-2xl font-bold mb-6 text-pink-400">Media Sosial</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <a href="#" class="flex items-center space-x-3 p-4 bg-gray-700/50 rounded-lg hover:bg-magenta-600/20 transition-colors">
+                                    <span class="text-2xl">📘</span>
+                                    <span class="text-white">Facebook</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-3 p-4 bg-gray-700/50 rounded-lg hover:bg-magenta-600/20 transition-colors">
+                                    <span class="text-2xl">📷</span>
+                                    <span class="text-white">Instagram</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-3 p-4 bg-gray-700/50 rounded-lg hover:bg-magenta-600/20 transition-colors">
+                                    <span class="text-2xl">🐦</span>
+                                    <span class="text-white">Twitter</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-3 p-4 bg-gray-700/50 rounded-lg hover:bg-magenta-600/20 transition-colors">
+                                    <span class="text-2xl">💼</span>
+                                    <span class="text-white">LinkedIn</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-gray-800/60 p-8 rounded-xl border border-magenta-500/30">
+                        <h3 class="text-2xl font-bold mb-6 text-magenta-400">Kirim Pesan</h3>
+                        
+                        <form id="contactForm" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Nama *</label>
+                                    <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">Telepon *</label>
+                                    <input type="tel" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                                <input type="email" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Subjek</label>
+                                <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors">
+                                    <option value="">Pilih Subjek</option>
+                                    <option value="konsultasi">Konsultasi Produk</option>
+                                    <option value="keluhan">Keluhan Layanan</option>
+                                    <option value="kerjasama">Kerjasama Bisnis</option>
+                                    <option value="lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Pesan *</label>
+                                <textarea required rows="5" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-magenta-500 focus:outline-none transition-colors" placeholder="Tulis pesan Anda di sini..."></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-magenta-600 hover:bg-magenta-700 text-white py-4 rounded-lg font-semibold transition-all glow-effect">
+                                Kirim Pesan
+                            </button>
+                        </form>
+
+                        <div id="contactSuccess" class="hidden mt-6 p-4 bg-green-800/30 border border-green-500/50 rounded-lg">
+                            <p class="text-green-400 font-semibold">✅ Pesan berhasil dikirim!</p>
+                            <p class="text-gray-300 text-sm mt-1">Kami akan membalas dalam 2 jam kerja.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-magenta-500/20 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-gradient mb-4">ElectroStore</h3>
+                    <p class="text-gray-400 mb-4">Toko elektronik terpercaya dengan produk berkualitas dan harga terbaik.</p>
+                    <div class="flex space-x-4">
+                        <span class="text-2xl cursor-pointer hover:text-magenta-400 transition-colors">📘</span>
+                        <span class="text-2xl cursor-pointer hover:text-magenta-400 transition-colors">📷</span>
+                        <span class="text-2xl cursor-pointer hover:text-magenta-400 transition-colors">🐦</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Produk</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Smartphone</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Laptop</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Headphone & Audio</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Gaming Console</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Perusahaan</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Tim</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Karir</a></li>
+                        <li><a href="#" class="hover:text-magenta-400 transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>📞 +62 812-3456-7890</li>
+                        <li>✉️ info@electrostore.com</li>
+                        <li>📍 Jakarta Selatan</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 ElectroStore. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            // Show selected page
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+            
+            // Update navigation active state
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('bg-magenta-600'));
+            
+            // Close mobile menu
+            document.getElementById('mobile-menu').classList.add('hidden');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Order form functionality
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const productCategory = document.getElementById('productCategory');
+            const specificProduct = document.getElementById('specificProduct').value;
+            const quantity = document.getElementById('quantity').value;
+            const budget = document.getElementById('budget').value;
+            const address = document.getElementById('address').value;
+            const additionalNotes = document.getElementById('additionalNotes').value;
+            const shipping = document.querySelector('input[name="shipping"]:checked');
+            const payment = document.querySelector('input[name="payment"]:checked');
+            
+            // Get shipping and payment labels
+            const shippingLabel = shipping.parentElement.querySelector('.font-medium').textContent;
+            const paymentLabel = payment.parentElement.querySelector('.font-medium').textContent;
+            const categoryLabel = productCategory.selectedIndex > 0 ? productCategory.options[productCategory.selectedIndex].text : 'Belum dipilih';
+            
+            // Show success message
+            document.getElementById('orderSummary').classList.remove('hidden');
+            
+            // Create summary
+            const summaryContent = document.getElementById('summaryContent');
+            summaryContent.innerHTML = `
+                <div><strong>Nama:</strong> ${fullName}</div>
+                <div><strong>Telepon:</strong> ${phone}</div>
+                ${email ? `<div><strong>Email:</strong> ${email}</div>` : ''}
+                <div><strong>Kategori Produk:</strong> ${categoryLabel}</div>
+                ${specificProduct ? `<div><strong>Produk Spesifik:</strong> ${specificProduct}</div>` : ''}
+                <div><strong>Jumlah:</strong> ${quantity} unit</div>
+                ${budget ? `<div><strong>Budget:</strong> Rp ${budget}</div>` : ''}
+                <div><strong>Alamat:</strong> ${address}</div>
+                <div><strong>Pengiriman:</strong> ${shippingLabel}</div>
+                <div><strong>Pembayaran:</strong> ${paymentLabel}</div>
+                ${additionalNotes ? `<div><strong>Catatan:</strong> ${additionalNotes}</div>` : ''}
+            `;
+            
+            // Scroll to summary
+            document.getElementById('orderSummary').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function resetForm() {
+            document.getElementById('orderForm').reset();
+            document.getElementById('orderSummary').classList.add('hidden');
+        }
+
+        // Contact form functionality
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            document.getElementById('contactSuccess').classList.remove('hidden');
+            
+            // Reset form
+            this.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('contactSuccess').classList.add('hidden');
+            }, 5000);
+        });
+
+        // Initialize form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set focus on first input when order page is shown
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                const firstInput = orderForm.querySelector('input');
+                if (firstInput) {
+                    firstInput.addEventListener('focus', function() {
+                        this.parentElement.classList.add('focused');
+                    });
+                }
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985b355d310bb251',t:'MTc1ODk3ODI4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby69gldStcoyb_97EFsucpjQbH4bxO0m9Pw3Vwwne5mM8Av-mfmIzMf6OYB-YpDgEBGqg/exec"; // ganti dengan URL Web App dari Apps Script
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Ambil data form manual biar jadi JSON
+        const fullName = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const productCategory = document.getElementById('productCategory');
+        const specificProduct = document.getElementById('specificProduct').value;
+        const quantity = document.getElementById('quantity').value;
+        const budget = document.getElementById('budget').value;
+        const address = document.getElementById('address').value;
+        const additionalNotes = document.getElementById('additionalNotes').value;
+        const shipping = document.querySelector('input[name="shipping"]:checked');
+        const payment = document.querySelector('input[name="payment"]:checked');
+        
+        const shippingLabel = shipping ? shipping.parentElement.querySelector('.font-medium').textContent : "";
+        const paymentLabel = payment ? payment.parentElement.querySelector('.font-medium').textContent : "";
+        const categoryLabel = productCategory.selectedIndex > 0 ? productCategory.options[productCategory.selectedIndex].text : 'Belum dipilih';
+
+        // Buat JSON data
+        const orderData = {
+            fullName,
+            phone,
+            email,
+            categoryLabel,
+            specificProduct,
+            quantity,
+            budget,
+            address,
+            shipping: shippingLabel,
+            payment: paymentLabel,
+            additionalNotes
+        };
+
+        // Kirim ke Google Spreadsheet via Apps Script
+        fetch(SCRIPT_URL, { 
+            method: 'POST',
+            body: JSON.stringify(orderData),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'no-cors' // biar no CORS
+        });
+
+        // ------ Bagian tampilan summary tetap jalan ------
+        document.getElementById('orderSummary').classList.remove('hidden');
+        const summaryContent = document.getElementById('summaryContent');
+        summaryContent.innerHTML = `
+            <div><strong>Nama:</strong> ${fullName}</div>
+            <div><strong>Telepon:</strong> ${phone}</div>
+            ${email ? `<div><strong>Email:</strong> ${email}</div>` : ''}
+            <div><strong>Kategori Produk:</strong> ${categoryLabel}</div>
+            ${specificProduct ? `<div><strong>Produk Spesifik:</strong> ${specificProduct}</div>` : ''}
+            <div><strong>Jumlah:</strong> ${quantity} unit</div>
+            ${budget ? `<div><strong>Budget:</strong> Rp ${budget}</div>` : ''}
+            <div><strong>Alamat:</strong> ${address}</div>
+            <div><strong>Pengiriman:</strong> ${shippingLabel}</div>
+            <div><strong>Pembayaran:</strong> ${paymentLabel}</div>
+            ${additionalNotes ? `<div><strong>Catatan:</strong> ${additionalNotes}</div>` : ''}
+        `;
+        document.getElementById('orderSummary').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+</body>
+</html>
